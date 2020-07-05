@@ -15,6 +15,6 @@ class TemperatureTestClass extends Temperature
      */
     protected function getTreshold()
     {
-        return 50;
+        return 10;
     }
 }
