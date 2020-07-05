@@ -4,17 +4,33 @@ declare(strict_types=1);
 
 namespace RigorTalks;
 
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Configuration;
 use RigorTalks\Exceptions\TemperatureNegativeException;
 
-final class Temperature
+class Temperature
 {
-    private $measure;
+    /**
+     * @var int
+     */
+    private int $measure;
 
+    //Use object itself to return it
+
+    /**
+     * @param int $measure
+     * @return self
+     * @throws TemperatureNegativeException
+     */
     public static function take(int $measure): self
     {
         return new static($measure);
     }
 
+    /**
+     * @param int $measure
+     * @throws TemperatureNegativeException
+     */
     private function __construct(int $measure)
     {
         $this->setMeasure($measure);
@@ -28,8 +44,9 @@ final class Temperature
      */
     private function setMeasure(int $measure)
     {
-        //Clausula de guardia (Guard Clauses)
+        //Clausula de guarda (Guard Clauses)
         $this->checkMeasureIsPositive($measure);
+
         $this->measure = $measure;
     }
 
@@ -44,8 +61,43 @@ final class Temperature
         }
     }
 
+    /**
+     * @return int
+     */
     public function measure(): int
     {
         return $this->measure;
+    }
+
+    /**
+     * Copled code
+     *
+     * How to text it:
+     *
+     * 1. send the database code to a private method: getTreshold
+     * 2. change private getTreshold to protected getTreshold
+     * 3. create a <Name>TestClass to extend getTreshold behavior to avoid database connection
+     * 4. in our test (TemperatureTest) methods with can change Temperature (father class) by TemperatureTestClass (son)
+     *
+     * @return bool
+     */
+    public function isSuperHot(): bool
+    {
+        $treshold = (int)$this->getTreshold();
+
+        return $this->measure() > $treshold;
+    }
+
+    protected function getTreshold()
+    {
+        $conn = DriverManager::getConnection([
+            'dbname' => 'rigor_talks',
+            'user' => 'root',
+            'password' => 'root',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql'
+        ], new Configuration());
+
+        return $conn->fetchOne('SELECT value FROM configuration WHERE name="hot_treshold"');
     }
 }
