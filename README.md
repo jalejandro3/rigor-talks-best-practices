@@ -3,7 +3,7 @@ Rigor Talks Best Practices con Carlos Buenosvinos
 
 # Annotations
 
-This practices include mutant testing with Infection, in order to use it, you must install it using the next
+These practices include mutant testing with Infection, in order to use it, you must install it using the next
 documentation:
 
 1. https://infection.github.io/guide/installation.html
