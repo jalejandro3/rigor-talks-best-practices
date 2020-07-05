@@ -30,8 +30,8 @@ final class TemperatureTest extends TestCase implements ColdTresholdInterface
          *
          * $this->markTestSkipped();
          */
-        $measure = 10;
-        $this->assertSame($measure, (Temperature::take(10))->measure());
+        $measure = 0;
+        $this->assertSame($measure, (Temperature::take($measure))->measure());
     }
 
     /**
@@ -49,7 +49,7 @@ final class TemperatureTest extends TestCase implements ColdTresholdInterface
     public function tryToCreateAValidTemperature()
     {
         $measure = 10;
-        $this->assertSame($measure, (Temperature::take(10))->measure());
+        $this->assertSame($measure, (Temperature::take($measure))->measure());
     }
 
     /**
