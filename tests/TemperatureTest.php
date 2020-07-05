@@ -138,4 +138,19 @@ final class TemperatureTest extends TestCase implements ColdTresholdInterface
     {
         return 50;
     }
+
+    /**
+     * @test
+     */
+    public function tryToSumTwoMeasures()
+    {
+        $a = Temperature::take(50);
+        $b = Temperature::take(50);
+
+        $c = $a->sum($b);
+
+        $this->assertSame(100, $c->measure());
+        $this->assertNotSame($c, $a);
+        $this->assertNotSame($c, $b);
+    }
 }
