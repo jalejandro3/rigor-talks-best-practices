@@ -6,6 +6,7 @@ namespace RigorTalks;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
+use RigorTalks\Contracts\ColdTresholdInterface;
 use RigorTalks\Exceptions\TemperatureNegativeException;
 
 class Temperature
@@ -99,5 +100,29 @@ class Temperature
         ], new Configuration());
 
         return $conn->fetchOne('SELECT value FROM configuration WHERE name="hot_treshold"');
+    }
+
+    public function isSuperCold(ColdTresholdInterface $coldTreshold): bool
+    {
+        $treshold = $coldTreshold->getTreshold();
+
+        return $this->measure() < $treshold;
+    }
+
+    /**
+     * Self-shunt broken law of demeter principle
+     *
+     * We use a trick to test method that does not comply with the law of demeter.
+     * In our test we will create methods that will be working as the object called in fromStation.
+     *
+     * @param $station
+     * @return static
+     * @throws TemperatureNegativeException
+     */
+    public static function fromStation($station): self
+    {
+        return new static(
+            $station->sensor()->temperature()->measure()
+        );
     }
 }

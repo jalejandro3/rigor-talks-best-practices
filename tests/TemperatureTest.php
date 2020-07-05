@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace RigorTalks\Tests;
 
+use RigorTalks\Contracts\ColdTresholdInterface;
 use RigorTalks\Temperature;
 use RigorTalks\Exceptions\TemperatureNegativeException;
 use PHPUnit\Framework\TestCase;
 use RigorTalks\TemperatureTestClass;
 
-final class TemperatureTest extends TestCase
+/**
+ * Class TemperatureTest
+ *
+ * This class implements Self-Shunt Pattern
+ * @link (https://wiki.c2.com/?SelfShuntPattern)
+ *
+ * @package RigorTalks\Tests
+ */
+final class TemperatureTest extends TestCase implements ColdTresholdInterface
 {
     /**
      * @test
@@ -61,5 +70,72 @@ final class TemperatureTest extends TestCase
         $this->assertTrue(
             TemperatureTestClass::take(100)->isSuperHot()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function tryToCheckIfASuperColdTemperatureIsSuperCold()
+    {
+        $this->assertTrue(
+            Temperature::take(10)->isSuperCold(
+                $this
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function tryToCheckIfASuperColdTemperatureIsSuperColdWithAnomClass()
+    {
+        $this->assertTrue(
+            Temperature::take(10)->isSuperCold(
+                new class implements ColdTresholdInterface {
+                    public function getTreshold(): int
+                    {
+                        return 30;
+                    }
+                }
+            )
+        );
+    }
+
+    /**
+     * Method implementation from ColdTresholdInterface
+     *
+     * @return int
+     */
+    public function getTreshold(): int
+    {
+        return 50;
+    }
+
+    /**
+     * @test
+     */
+    public function tryToCreateTemperatureFromStation()
+    {
+        $this->assertSame(
+            50,
+            Temperature::fromStation(
+                $this
+            )->measure()
+        );
+    }
+
+    public function sensor()
+    {
+        return $this;
+    }
+
+    public function temperature()
+    {
+        return $this;
+    }
+
+    public function measure()
+    {
+        return 50;
     }
 }
