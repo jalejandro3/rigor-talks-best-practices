@@ -1,6 +1,8 @@
 # rigor-talks-best-practices
 Rigor Talks Best Practices con Carlos Buenosvinos
 
+https://www.youtube.com/playlist?list=PLfgj7DYkKH3Cd8bdu5SIHGYXh_bPV2idP
+
 # Annotations
 
 These practices include mutant testing with Infection, in order to use it, you must install it using the next
