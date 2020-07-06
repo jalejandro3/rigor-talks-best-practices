@@ -132,6 +132,12 @@ class Temperature
     }
 
     /**
+     * Method to prove Immutability.
+     *
+     * We need to sum two temperature, but, we must ensure that the temperature result is not
+     * affected by another process in the middle, so, we return a new instance of temperature
+     * with the value of the sum operation.
+     *
      * @param Temperature $anotherTemperature
      * @return $this
      * @throws TemperatureNegativeException
