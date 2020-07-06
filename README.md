@@ -8,7 +8,8 @@ documentation:
 
 1. https://infection.github.io/guide/installation.html
 
-## About Testing:
+## About Technologies:
 
 1. PHPUnit: https://phpunit.readthedocs.io/es/latest/configuration.html
 2. Mutant Testing (with infection): https://infection.github.io/
+3. Doctrine\DBAL: https://github.com/doctrine/dbal
