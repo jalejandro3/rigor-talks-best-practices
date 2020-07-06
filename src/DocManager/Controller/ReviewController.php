@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace RigorTalks\DocManager\Controller;
 
-use RigorTalks\DocManager\Entity\Review;
 use RigorTalks\DocManager\Service\UpdateReviewUseCase;
 
 /**
@@ -53,10 +52,5 @@ final class ReviewController extends BaseController
             $logger,
             $reviewRepository
         ))->execute($reviewId, $data);
-    }
-
-    public function get(int $id): Review
-    {
-        return $this->getManager()->getRepository('RigorTalks\DocManager\Entity\Review')->find($id);
     }
 }
