@@ -6,7 +6,7 @@ Rigor Talks Best Practices con Carlos Buenosvinos
 These practices include mutant testing with Infection, in order to use it, you must install it using the next
 documentation:
 
-1. https://infection.github.io/guide/installation.html
+1. Infection: https://infection.github.io/guide/installation.html
 
 ## About Technologies:
 
