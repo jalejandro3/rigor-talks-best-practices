@@ -13,7 +13,9 @@ use Exception;
  *
  * The Steps:
  *
- * 1. remove unused variables
+ * 1. remove unused variables: we need remove unused variables from our code, in this case, $date and $dateFormat.
+ *  - Clean code policies.
+ * 2. generate an application service to 
  *
  * @package RigorTalks\DocManager\Controller
  */
@@ -22,10 +24,8 @@ final class ReviewController extends BaseController
     public function update(int $reviewId, array $data = [])
     {
         $review = $this->get($reviewId);
-        $date = new \DateTime;
-        $dateFormat = $date->format("Y-m-d H:i:s");
 
-        if ($review->getState() === ReviewStates::IN_PROGRESS) {
+        if ($review->getState() == ReviewStates::IN_PROGRESS) {
             $data['extra'] = serialize(json_decode($data['extra']));
 
             $review->update($data);
@@ -47,7 +47,8 @@ final class ReviewController extends BaseController
                     serialize(['Review' => SuperLogEvents::REVIEW_UPDATED]),
                     serialize([
                         'auction' => $review->getAuction()->toArray(),
-                        'review' => $review->toArray()]));
+                        'review' => $review->toArray()
+                    ]));
 
             return $review;
         } else {
