@@ -45,7 +45,7 @@ class Temperature
      */
     private function setMeasure(int $measure)
     {
-        //Clausula de guarda (Guard Clauses)
+        //Guard Clause
         $this->checkMeasureIsPositive($measure);
 
         $this->measure = $measure;
@@ -71,16 +71,18 @@ class Temperature
     }
 
     /**
-     * Copled code
+     * Coupled code
      *
-     * How to text it:
+     * How to test it:
      *
      * 1. send the database code to a private method: getTreshold
      * 2. change private getTreshold to protected getTreshold
      * 3. create a <Name>TestClass to extend getTreshold behavior to avoid database connection
-     * 4. in our test (TemperatureTest) methods with can change Temperature (father class) by TemperatureTestClass (son)
+     * 4. in our test (TemperatureTest) methods with can change Temperature (father class) by
+     * TemperatureTestClass (child)
      *
      * @return bool
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function isSuperHot(): bool
     {
@@ -89,6 +91,10 @@ class Temperature
         return $this->measure() > $treshold;
     }
 
+    /**
+     * @return false|mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
     protected function getTreshold()
     {
         $conn = DriverManager::getConnection([
@@ -102,6 +108,10 @@ class Temperature
         return $conn->fetchOne('SELECT value FROM configuration WHERE name="hot_treshold"');
     }
 
+    /**
+     * @param ColdTresholdInterface $coldTreshold
+     * @return bool
+     */
     public function isSuperCold(ColdTresholdInterface $coldTreshold): bool
     {
         $treshold = $coldTreshold->getTreshold();
@@ -110,11 +120,6 @@ class Temperature
     }
 
     /**
-     * Self-shunt broken law of demeter principle
-     *
-     * We use a trick to test method that does not comply with the law of demeter.
-     * In our test we will create methods that will be working as the object called in fromStation.
-     *
      * @param $station
      * @return static
      * @throws TemperatureNegativeException
@@ -127,20 +132,12 @@ class Temperature
     }
 
     /**
-     * Method to prove Immutability.
-     *
-     * We need to sum two temperature, but, we must ensure that the temperature result is not
-     * affected by another process in the middle, so, we return a new instance of temperature
-     * with the value of the sum operation.
-     *
      * @param Temperature $anotherTemperature
      * @return $this
      * @throws TemperatureNegativeException
      */
     public function sum(self $anotherTemperature): self
     {
-        return new static(
-            $this->measure() + $anotherTemperature->measure()
-        );
+        return new static($this->measure() + $anotherTemperature->measure());
     }
 }

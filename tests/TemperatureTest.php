@@ -112,6 +112,11 @@ final class TemperatureTest extends TestCase implements ColdTresholdInterface
     }
 
     /**
+     * Self-shunt broken law of demeter principle
+     *
+     * We use a trick to test method that does not comply with the law of demeter.
+     * In our test we will create methods that will be working as the object called in fromStation.
+     *
      * @test
      */
     public function tryToCreateTemperatureFromStation()
@@ -140,6 +145,12 @@ final class TemperatureTest extends TestCase implements ColdTresholdInterface
     }
 
     /**
+     * Method to prove Immutability.
+     *
+     * We need to sum two temperature, but, we must ensure that the temperature result is not
+     * affected by another process in the middle, so, we return a new instance of temperature
+     * with the value of the sum operation.
+     *
      * @test
      */
     public function tryToSumTwoMeasures()
